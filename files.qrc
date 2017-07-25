@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>CameraParameters.yml</file>
+    </qresource>
+</RCC>

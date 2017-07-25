@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/images/background3.jpg</file>
+        <file>resources/fuentes/angelina.TTF</file>
+        <file>resources/fuentes/Bethhrg_.ttf</file>
+        <file>resources/images/isologo3.png</file>
+    </qresource>
+</RCC>
