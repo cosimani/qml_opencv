@@ -2,6 +2,8 @@
 #define VIDEOFILTER
 
 #include <QAbstractVideoFilter>
+#include <QOpenGLTexture>
+
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -27,6 +29,7 @@ class VideoFilter : public QAbstractVideoFilter
 
 public:
     QVideoFilterRunnable *createFilterRunnable() Q_DECL_OVERRIDE;
+
 
 
     int gaussianBlurSize() const;
@@ -68,6 +71,7 @@ public:
 
 private:
     VideoFilter * m_filter;
+    QOpenGLTexture *texture;
 
     void deleteColorComponentFromYUV(QVideoFrame *input);
     cv::Mat yuvFrameToMat8(QVideoFrame *frame);

@@ -21,7 +21,8 @@ include(deployment.pri)
 HEADERS += \
     videofilter.h \
     scene.h \
-    registro.h
+    registro.h \
+    rgbframehelper.h
 
 ! contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Si no es para Android entonces para Desktop
 
@@ -50,7 +51,7 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Para Android
 #    message( Compilacion para Android )
 
 ###############################################################################################
-    DIR_ANDROID_OPENCV = /home/cosimani/Proyecto/2017/OpenCV-3.2.0-android-sdk/sdk/native #####
+    DIR_ANDROID_OPENCV = /home/ubp/OpenCV-3.2.0-android-sdk/sdk/native #####
 ###############################################################################################
 
     INCLUDEPATH += $$DIR_ANDROID_OPENCV/jni/include
@@ -97,3 +98,4 @@ DISTFILES += \
     android/gradlew \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew.bat
+
