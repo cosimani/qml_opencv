@@ -1,6 +1,9 @@
 #include <videofilter.h>
 #include "rgbframehelper.h"
 #include <QDebug>
+#include <QResource>
+#include <QFile>
+#include<QDir>
 
 QVideoFilterRunnable *VideoFilter::createFilterRunnable()
 {
@@ -49,12 +52,46 @@ void VideoFilter::setCannyKernelSize(int cannyKernelSize)
 
 
 FilterRunnable::FilterRunnable(VideoFilter *filter) :
-    m_filter(filter)
+    m_filter(filter), markerDetector( new MarkerDetector ),
+cameraParameters( new CameraParameters )
 {        
     texture = new QOpenGLTexture( QOpenGLTexture::Target2D );
     texture->setMinificationFilter( QOpenGLTexture::Nearest );
     texture->setMagnificationFilter( QOpenGLTexture::Linear );
     texture->setFormat( QOpenGLTexture::RGBA8_UNorm );
+
+    #define CAMERA_PARAMETERS_FILE_RESOURCE ":/CameraParameters.yml"
+    #define CAMERA_PARAMETERS_FILE_LOCAL "./CameraParameters.yml"
+
+    QResource yml( CAMERA_PARAMETERS_FILE_RESOURCE );
+
+    QFile ymlFileResource(yml.absoluteFilePath());
+
+    if (!ymlFileResource.open(QIODevice::ReadOnly | QIODevice::Text))  {
+        qDebug() << "No se pudo iniciar camara 2 / Problema con parametros de la camara";
+    }
+
+    QTextStream in(&ymlFileResource);
+    QString content = in.readAll();
+
+        // Creo un archivo nuevo para almacenarlo
+    QFile ymlFileLocal(CAMERA_PARAMETERS_FILE_LOCAL);
+    if (!ymlFileLocal.open(QIODevice::WriteOnly | QIODevice::Text))  {
+        qDebug() << "No se pudo iniciar camara / Problema con parametros de la camara";
+    }
+
+    QTextStream out(&ymlFileLocal);
+    out << content;
+
+    ymlFileLocal.close();
+
+    cameraParameters->readFromXMLFile( CAMERA_PARAMETERS_FILE_LOCAL );
+
+
+    if ( ! cameraParameters->isValid() )  {
+        qDebug() << "Error con YML / No es valido. La App se cerrara";
+    }
+
 }
 
 FilterRunnable::~FilterRunnable()
@@ -67,24 +104,6 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
                                  const QVideoSurfaceFormat &surfaceFormat,
                                  QVideoFilterRunnable::RunFlags flags )
 {
-
-//    int gaussianBlurSize = m_filter->gaussianBlurSize();
-//    double gaussianBlurCoef = m_filter->gaussianBlurCoef();
-//    int cannyKernelSize = m_filter->cannyKernelSize();
-//    double cannyThreshold = m_filter->cannyThreshold();
-
-    // La valores por defecto son estos.
-    int gaussianBlurSize = 7;
-    double gaussianBlurCoef = 1.5f;
-    int cannyKernelSize = 3;
-    double cannyThreshold = 0;
-
-//    gaussianBlurSize 7 gaussianBlurCoef 1.5 cannyKernelSize 3 cannyThreshold 0
-//    gaussianBlurSize 7 gaussianBlurCoef 1.5 cannyKernelSize 3 cannyThreshold 0
-//    gaussianBlurSize 7 gaussianBlurCoef 1.5 cannyKernelSize 3 cannyThreshold 0
-//    gaussianBlurSize 7 gaussianBlurCoef 1.5 cannyKernelSize 3 cannyThreshold 0
-//    gaussianBlurSize 7 gaussianBlurCoef 1.5 cannyKernelSize 3 cannyThreshold 0
-
     if ( ! input->isValid() )
         return *input;
 
@@ -102,24 +121,29 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
         for (int i = 0; i < 256; i++)
         {
             colorTable.push_back(qRgb(i, i, i));
-        }        
-        const uchar *qImageBuffer = (const uchar*) mat.data;        
+        }
+        cameraParameters->resize( mat.size() );
+        markerDetector->detect( mat, detectedMarkers, *cameraParameters, 0.08f );
+
+        for( unsigned int i = 0; i < detectedMarkers.size(); i++ )
+            detectedMarkers.at( i ).draw( mat, Scalar( 255, 0, 255 ), 1 );
+        const uchar *qImageBuffer = (const uchar*) mat.data;
         QImage img(qImageBuffer, mat.cols, mat.rows, mat.step, QImage::Format_Indexed8);
-        img.setColorTable(colorTable);    
+        img.setColorTable(colorTable);
         input->unmap();
-        QVideoFrame outputFrame = QVideoFrame(img);    
+        QVideoFrame outputFrame = QVideoFrame(img);
         return outputFrame;
     } else {
+        using namespace cv;
         input->map(QAbstractVideoBuffer::ReadOnly);
         QImage image = imageWrapper(*input);
-        cv::Mat mat(image.width(),image.height(),CV_8UC3,image.bits(), image.bytesPerLine());
-        Point pt1;
-        pt1.x = 0;
-        pt1.y = 0;
-        Point pt2;
-        pt2.x = 200;
-        pt2.y = 200;
-        cv::line(mat, pt1, pt2, cv::Scalar(0,255,0), 20);
+        image = image.scaled(480,640,Qt::IgnoreAspectRatio); // si hago esto no detecta markers
+        image = image.convertToFormat(QImage::Format_RGB888);
+        Mat mat(image.width(),image.height(),CV_8UC3,image.bits(), image.bytesPerLine());
+        cameraParameters->resize( mat.size() );
+        markerDetector->detect( mat, detectedMarkers, *cameraParameters, 0.08f );
+        for( unsigned int i = 0; i < detectedMarkers.size(); i++ )
+            detectedMarkers.at( i ).draw( mat, Scalar( 255, 0, 255 ), 1 );
         input->unmap();
         texture->setData(image);
         texture->bind();

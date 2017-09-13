@@ -12,9 +12,12 @@
 #include <opencv2/imgcodecs.hpp>
 #include "opencv2/videoio.hpp"
 
+#include <aruco/aruco.h>
+
 #include <QDebug>
 
 using namespace cv;
+using namespace aruco;
 
 
 class VideoFilter : public QAbstractVideoFilter
@@ -72,6 +75,9 @@ public:
 private:
     VideoFilter * m_filter;
     QOpenGLTexture *texture;
+    MarkerDetector * markerDetector;
+    std::vector< Marker > detectedMarkers;
+    CameraParameters *cameraParameters;    
 
     void deleteColorComponentFromYUV(QVideoFrame *input);
     cv::Mat yuvFrameToMat8(QVideoFrame *frame);

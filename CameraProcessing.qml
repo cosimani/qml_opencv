@@ -23,6 +23,7 @@ Item {
         source: camera
         focus : visible
         filters: [videoFilter]
+        orientation: 270
 
 
     }

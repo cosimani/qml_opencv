@@ -6,7 +6,16 @@ CONFIG += c++11
 SOURCES += main.cpp \
     videofilter.cpp \
     scene.cpp \
-    registro.cpp
+    registro.cpp \
+    aruco/ar_omp.cpp \
+    aruco/arucofidmarkers.cpp \
+    aruco/board.cpp \
+    aruco/boarddetector.cpp \
+    aruco/cameraparameters.cpp \
+    aruco/highlyreliablemarkers.cpp \
+    aruco/marker.cpp \
+    aruco/markerdetector.cpp \
+    aruco/subpixelcorner.cpp
 
 RESOURCES += qml.qrc \
     qmlcamera.qrc \
@@ -22,7 +31,18 @@ HEADERS += \
     videofilter.h \
     scene.h \
     registro.h \
-    rgbframehelper.h
+    rgbframehelper.h \
+    aruco/ar_omp.h \
+    aruco/aruco.h \
+    aruco/arucofidmarkers.h \
+    aruco/board.h \
+    aruco/boarddetector.h \
+    aruco/cameraparameters.h \
+    aruco/exports.h \
+    aruco/highlyreliablemarkers.h \
+    aruco/marker.h \
+    aruco/markerdetector.h \
+    aruco/subpixelcorner.h
 
 ! contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Si no es para Android entonces para Desktop
 
