@@ -1,12 +1,13 @@
+QT += qml quick multimedia widgets quickwidgets opengl
+CONFIG += c++11
+
 TEMPLATE = app
 
-QT += qml quick multimedia widgets quickwidgets
-CONFIG += c++11
+DEFINES += NO_DEBUG_ARUCO
 
 SOURCES += main.cpp \
     videofilter.cpp \
     scene.cpp \
-    registro.cpp \
     aruco/ar_omp.cpp \
     aruco/arucofidmarkers.cpp \
     aruco/board.cpp \
@@ -15,23 +16,28 @@ SOURCES += main.cpp \
     aruco/highlyreliablemarkers.cpp \
     aruco/marker.cpp \
     aruco/markerdetector.cpp \
-    aruco/subpixelcorner.cpp
+    aruco/subpixelcorner.cpp \
+    texturebuffer.cpp \
+    filterrunnable.cpp \
+    backend.cpp \
+    logorenderer.cpp \
+    fboinsgrenderer.cpp \
+    geometryengine.cpp
 
 RESOURCES += qml.qrc \
-    qmlcamera.qrc \
-    files.qrc
+    files.qrc \
+    textures.qrc
+
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
 # Default rules for deployment.
-include(deployment.pri)
+#include(deployment.pri)
 
 HEADERS += \
     videofilter.h \
     scene.h \
-    registro.h \
-    rgbframehelper.h \
     aruco/ar_omp.h \
     aruco/aruco.h \
     aruco/arucofidmarkers.h \
@@ -42,7 +48,13 @@ HEADERS += \
     aruco/highlyreliablemarkers.h \
     aruco/marker.h \
     aruco/markerdetector.h \
-    aruco/subpixelcorner.h
+    aruco/subpixelcorner.h \
+    texturebuffer.h \
+    filterrunnable.h \
+    backend.h \
+    logorenderer.h \
+    fboinsgrenderer.h \
+    geometryengine.h
 
 ! contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Si no es para Android entonces para Desktop
 
@@ -63,6 +75,21 @@ HEADERS += \
     unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_ml.so           # OpenCV
     unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_features2d.so
 
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_features2d.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_video.so
+
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_flann.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_photo.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_stitching.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_superres.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_video.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_videostab.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_imgcodecs.so
+    unix:LIBS += $$DIR_OPENCV_LIBS/libopencv_videoio.so
+
+    unix:LIBS += "/usr/lib/x86_64-linux-gnu/lib3ds.so"                 # Modelos 3D
+
+
     DEFINES += DESKTOP
 }
 
@@ -71,7 +98,8 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Para Android
 #    message( Compilacion para Android )
 
 ###############################################################################################
-    DIR_ANDROID_OPENCV = /home/ubp/OpenCV-3.2.0-android-sdk/sdk/native #####
+#    DIR_ANDROID_OPENCV = /home/ubp/OpenCV-3.2.0-android-sdk/sdk/native #####
+    DIR_ANDROID_OPENCV = /home/cosimani/Proyecto/2017/OpenCV-3.2.0-android-sdk/sdk/native #####
 ###############################################################################################
 
     INCLUDEPATH += $$DIR_ANDROID_OPENCV/jni/include
@@ -106,8 +134,7 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Para Android
 }
 
 FORMS += \
-    scene.ui \
-    registro.ui
+    scene.ui
 
 DISTFILES += \
     qmlcamera.qml \

@@ -14,6 +14,9 @@
 
 #include <QTimer>
 
+
+#include "backend.h"
+
 using namespace cv;
 
 namespace Ui {
@@ -24,31 +27,27 @@ class Scene : public QWidget
 {
     Q_OBJECT
 
+private:
+    static Scene *instancia;
+    explicit Scene( QWidget * parent = 0 );
+
 public:
-    explicit Scene(QWidget *parent = 0);
+    static Scene *getInstancia();
     ~Scene();
 
-    void apagarCamara();
-    void encenderCamara();
+    void send();
+
+    void sendMatrix( QMatrix4x4 matrix );
+
+
+    BackEnd * backend;
+
+    BackEnd *getBackend() const;
+    void setBackend(BackEnd *value);
 
 private:
     Ui::Scene *ui;
 
-    QNetworkAccessManager *manager;
-    QTimer * placeTimer;
-
-
-
-public slots:
-    void slot_imageProcessing( const QString& image );
-    void slot_imagePath( const QString& path );
-
-    void slot_uploadFinished(QNetworkReply *reply);
-    void showPlaceAgain();
-
-signals:
-    void newMarkerDetected( int markerId );
-    void mensaje( QString mensaje );
 
 };
 
