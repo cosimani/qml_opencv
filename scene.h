@@ -14,6 +14,8 @@
 
 #include <QTimer>
 
+#include <QShowEvent>
+
 
 #include "backend.h"
 
@@ -47,6 +49,12 @@ public:
 
 private:
     Ui::Scene *ui;
+
+    void configurarWidget();
+
+protected:
+    void showEvent( QShowEvent * );
+    void resizeEvent( QResizeEvent * e );
 
 
 };

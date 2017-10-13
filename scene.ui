@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>449</width>
+    <height>425</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,33 +19,25 @@
   <property name="windowTitle">
    <string>Scene</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>0</number>
+  <widget class="QQuickWidget" name="quickWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>371</width>
+     <height>211</height>
+    </rect>
    </property>
-   <property name="topMargin">
-    <number>0</number>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
-   <property name="rightMargin">
-    <number>0</number>
+   <property name="resizeMode">
+    <enum>QQuickWidget::SizeRootObjectToView</enum>
    </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-   <item row="0" column="0">
-    <widget class="QQuickWidget" name="quickWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="resizeMode">
-      <enum>QQuickWidget::SizeRootObjectToView</enum>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

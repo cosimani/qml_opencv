@@ -111,12 +111,16 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
 
         Mat mat( image.height(), image.width(), CV_8UC3, image.bits(), image.bytesPerLine() );
 
-
+//        flip( mat, mat, 0 );  // eje x
+        flip( mat, mat, 1 );  // eje y
+        flip( mat, mat, -1 );  // ambos
 
         cameraParameters->resize( mat.size() );
         markerDetector->detect( mat, detectedMarkers, *cameraParameters, 0.08f );
 
         flip( mat, mat, 0 );
+//        flip( mat, mat, 1 );
+//        flip( mat, mat, -1 );
 
         if( detectedMarkers.size() > 0 )  {
 
@@ -167,6 +171,11 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
                 modelView( 1, 3 ) = modelview_matrix[ 13 ];
                 modelView( 2, 3 ) = modelview_matrix[ 14 ];
                 modelView( 3, 3 ) = modelview_matrix[ 15 ];
+
+//                projection.rotate(180, 0,0,1);
+
+                modelView.rotate(270, 0,0,1);
+
 
                 Scene::getInstancia()->getBackend()->setMatriz( projection * modelView );
 

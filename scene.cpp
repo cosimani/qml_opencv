@@ -38,6 +38,7 @@ Scene::Scene(QWidget *parent) : QWidget(parent),
 
     ui->quickWidget->rootContext()->setContextProperty( "Back", backend );
 
+
 }
 
 
@@ -83,4 +84,96 @@ void Scene::setBackend(BackEnd *value)
     backend = value;
 }
 
+void Scene::showEvent( QShowEvent * )
+{
+    qDebug() << "showEvent";
+    this->configurarWidget();
+}
+
+void Scene::resizeEvent(QResizeEvent *e)
+{
+    qDebug() << "resizeEvent" << e->type();
+    this->configurarWidget();
+
+//    resizeEvent 449 425
+//    showEvent 449 425
+//    resizeEvent 1440 2672
+}
+
+void Scene::configurarWidget()
+{
+    qDebug() << "Dimensiones Scene" << this->width() << this->height();
+
+    ui->quickWidget->resize( this->width(), this->height() );
+    ui->quickWidget->move( 0, 0 );
+
+    qDebug() << "Dimensiones quickWidget" << ui->quickWidget->width() << ui->quickWidget->height();
+
+    QQmlEngine * engine = ui->quickWidget->rootContext()->engine();
+
+//    QQuickItem * itemRoot = ui->quickWidget->rootObject();
+//    QQuickItem * rectangle = itemRoot->childItems().at( 0 );
+//    QQuickItem * mouseArea = itemRoot->childItems().at( 1 );
+//    QQuickItem * videoOutput = itemRoot->childItems().at( 2 );
+
+//    qDebug() << "rectangle" << rectangle;
+//    qDebug() << "mouseArea" << mouseArea;
+//    qDebug() << "videoOutput" << videoOutput;
+
+//    qDebug() << "Listado rectangle" << rectangle->childItems();
+//    qDebug() << "Listado mouseArea" << mouseArea->childItems();
+//    qDebug() << "Listado videoOutput" << videoOutput->childItems();
+
+//    QQuickItem * renderer = videoOutput->childItems().at( 0 );
+//    qDebug() << "renderer" << renderer;
+
+//    qDebug() << "Listado renderer" << renderer->childItems();
+
+
+//    qDebug() << "childItems" << itemRoot->childItems();
+
+//    for ( int i=0 ; i<itemRoot->childItems().size() ; i++ )  {
+//        qDebug() << itemRoot->childItems().at( i )
+//                 << itemRoot->childItems().at( i )->x()
+//                 << itemRoot->childItems().at( i )->y()
+//                 << itemRoot->childItems().at( i )->width()
+//                 << itemRoot->childItems().at( i )->height();
+//    }
+
+
+//    QQuickRectangle(0xe28b3400, parent=0xe28b2ce0, geometry=0,0 1440x2672) 0 0 1440 2672
+//    QQuickMouseArea(0xe28b3460, parent=0xe28b2ce0, geometry=0,0 1440x2672) 0 0 1440 2672
+//    QDeclarativeVideoOutput(0xd4494300, parent=0xe28b2ce0, geometry=0,0 1440x2672) 0 0 1440 2672
+
+
+
+
+
+//    QQmlApplicationEngine
+
+//    QQmlComponent component( engine );
+//    QObject *object = component.create();
+
+//    qDebug() << "Property value:" << QQmlProperty::read( object, "item.videoOutput.renderer.width" ).toInt();
+
+
+//    qDebug() << "children" << engine->children();
+//    qDebug() << "children" << engine->rootContext()->children();
+
+
+
+//    QObject *rootObject = engine->rootObjects().first();
+
+//    QObject *qmlObject_renderer = rootObject->findChild<QObject*>("renderer");
+//    QObject *qmlObject_videoOutput = rootObject->findChild<QObject*>("videoOutput");
+//    QObject *qmlObject_item = rootObject->findChild<QObject*>("item");
+//    QObject *qmlObject_rectangle = rootObject->findChild<QObject*>("rectangle");
+//    QObject *qmlObject_mouseArea = rootObject->findChild<QObject*>("mouseArea");
+//    QObject *qmlObject_camera = rootObject->findChild<QObject*>("camera");
+//    QObject *qmlObject_videoFilter = rootObject->findChild<QObject*>("videoFilter");
+
+//    qDebug() << qmlObject_renderer->property("visible");
+
+
+}
 
