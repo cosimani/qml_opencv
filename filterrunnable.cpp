@@ -112,13 +112,13 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
         Mat mat( image.height(), image.width(), CV_8UC3, image.bits(), image.bytesPerLine() );
 
 //        flip( mat, mat, 0 );  // eje x
-        flip( mat, mat, 1 );  // eje y
-        flip( mat, mat, -1 );  // ambos
+//        flip( mat, mat, 1 );  // eje y
+//        flip( mat, mat, -1 );  // ambos
 
         cameraParameters->resize( mat.size() );
         markerDetector->detect( mat, detectedMarkers, *cameraParameters, 0.08f );
 
-        flip( mat, mat, 0 );
+//        flip( mat, mat, 0 );
 //        flip( mat, mat, 1 );
 //        flip( mat, mat, -1 );
 
@@ -177,15 +177,9 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
                 modelView.rotate(270, 0,0,1);
 
 
-                Scene::getInstancia()->getBackend()->setMatriz( projection * modelView );
-
 //                detectedMarkers.at( i ).draw( mat, Scalar( 255, 0, 255 ), 1 );
 
             }
-        }
-        else  {
-            // Setea la matriz identidad cuando no detecta marcadores.
-            Scene::getInstancia()->getBackend()->setMatriz( QMatrix4x4() );
         }
 
 

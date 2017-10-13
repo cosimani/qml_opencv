@@ -27,7 +27,10 @@ Item  {
 
         onClicked: {
             if ( camera.position == Camera.FrontFace )  {
-                camera.position = Camera.BackFace
+//                camera.position = Camera.BackFace
+                camera.stop();
+                videoOutput.source = mediaplayer
+                mediaplayer.play();
             }
             else  {
                 camera.position = Camera.FrontFace
@@ -68,11 +71,6 @@ Item  {
         id: renderer
         objectName: renderer
 
-        // Para que el render se haga justo donde esta la imagen de la camara
-        x: videoOutput.contentRect.x
-        y: videoOutput.contentRect.y
-        width: videoOutput.contentRect.width
-        height: videoOutput.contentRect.height
 
     }
 
@@ -80,4 +78,10 @@ Item  {
         id: videoFilter
         objectName: videoFilter
     }
+
+    MediaPlayer  {
+        id: mediaplayer
+        source: ":/images/Mujer-maravilla.mp4"
+    }
+
 }

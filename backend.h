@@ -8,8 +8,6 @@
 class BackEnd : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
-    Q_PROPERTY(QMatrix4x4 matriz MEMBER m_matriz READ getMatriz WRITE setMatriz NOTIFY matrizChanged)
 
 public:
     explicit BackEnd( QObject *parent = nullptr );
