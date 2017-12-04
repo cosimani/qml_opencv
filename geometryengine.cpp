@@ -59,7 +59,11 @@ struct VertexData
     QVector2D texCoord;
 };
 
-GeometryEngine::GeometryEngine() : indexCubeBuf(QOpenGLBuffer::IndexBuffer),indexSheetBuf(QOpenGLBuffer::IndexBuffer)
+GeometryEngine::GeometryEngine() : indexCubeBuf(QOpenGLBuffer::IndexBuffer),
+                                   indexSheetBuf(QOpenGLBuffer::IndexBuffer),
+                                   indexHojaBuf(QOpenGLBuffer::IndexBuffer),
+                                   indexVideoBuf(QOpenGLBuffer::IndexBuffer),
+                                   indexVideoTarjetaBuf(QOpenGLBuffer::IndexBuffer)
 {
     initializeOpenGLFunctions();
 
@@ -77,15 +81,25 @@ GeometryEngine::GeometryEngine() : indexCubeBuf(QOpenGLBuffer::IndexBuffer),inde
     arrayHojaBuf.create();
     indexHojaBuf.create();
 
+    arrayVideoBuf.create();
+    indexVideoBuf.create();
+
+    arrayVideoTarjetaBuf.create();
+    indexVideoTarjetaBuf.create();
+
 
     // Initializes cube geometry and transfers it to VBOs
     initCubeGeometry();
 
-    initCameraGeometry();
+//    initCameraGeometry();
 
     initSheetGeometry();
 
     initHojaGeometry();
+
+    initVideoGeometry();
+
+    initVideoTarjetaGeometry();
 }
 
 GeometryEngine::~GeometryEngine()
@@ -102,18 +116,43 @@ GeometryEngine::~GeometryEngine()
     arrayHojaBuf.destroy();
     indexHojaBuf.destroy();
 
+    arrayVideoBuf.destroy();
+    indexVideoBuf.destroy();
+
+    arrayVideoTarjetaBuf.destroy();
+    indexVideoTarjetaBuf.destroy();
+
 }
 
 void GeometryEngine::initHojaGeometry()
 {
     GLfloat unidad = 1.0f;
 
+    // Se dibuja bien pero pata para arriba
+//    VertexData vertices[] = {
+//        // Vertex data for face 0
+//        { QVector3D( -unidad, -unidad, 0 ), QVector2D( 0.0f, 0.0f ) },  // v0
+//        { QVector3D(  unidad, -unidad, 0 ), QVector2D( 1.0f, 0.0f ) },  // v1
+//        { QVector3D( -unidad,  unidad, 0 ), QVector2D( 0.0f, 1.0f ) },  // v2
+//        { QVector3D(  unidad,  unidad, 0 ), QVector2D( 1.0f, 1.0f ) }   // v3
+//    };
+
+//    VertexData vertices[] = {
+//        // Vertex data for face 0
+//        { QVector3D( -unidad * 2, -unidad * 4, 0 ), QVector2D( 0.0f, 1.0f ) },  // v0
+//        { QVector3D(  unidad * 12 , -unidad *4, 0 ), QVector2D( 1.0f, 1.0f ) },  // v1
+//        { QVector3D( -unidad * 2,  unidad * 17, 0 ), QVector2D( 0.0f, 0.0f ) },  // v2
+//        { QVector3D(  unidad * 12 ,  unidad *17, 0 ), QVector2D( 1.0f, 0.0f ) }   // v3
+//    };
+
     VertexData vertices[] = {
-        { QVector3D(  unidad,  unidad, 0 ), QVector2D( 1.0f, 1.0f ) },
-        { QVector3D( -unidad,  unidad, 0 ), QVector2D( 0.0f, 1.0f ) },
-        { QVector3D( -unidad, -unidad, 0 ), QVector2D( 0.0f, 0.0f ) },
-        { QVector3D(  unidad, -unidad, 0 ), QVector2D( 1.0f, 0.0f ) },
+        // Vertex data for face 0
+        { QVector3D( -unidad * 2, -unidad * 4, 0 ), QVector2D( 1.0f, 1.0f ) },  // v0
+        { QVector3D(  unidad * 12 , -unidad *4, 0 ), QVector2D( 0.0f, 1.0f ) },  // v1
+        { QVector3D( -unidad * 2,  unidad * 17, 0 ), QVector2D( 1.0f, 0.0f ) },  // v2
+        { QVector3D(  unidad * 12 ,  unidad *17, 0 ), QVector2D( 0.0f, 0.0f ) }   // v3
     };
+
 
     GLushort indices[] = { 0,  1,  2,  3,  3 };
 
@@ -124,6 +163,68 @@ void GeometryEngine::initHojaGeometry()
     // Transfer index data to VBO 1
     indexHojaBuf.bind();
     indexHojaBuf.allocate( indices, 5 * sizeof( GLushort ) );
+
+
+
+}
+
+void GeometryEngine::initVideoGeometry()
+{
+    GLfloat unidad = 1.0f;
+    GLfloat distanciaSobreElPapel = 0.01f;
+
+    VertexData vertices[] = {
+        // Vertex data for face 0
+        { QVector3D( -unidad, -unidad * -1, distanciaSobreElPapel ), QVector2D( 1.0f, 1.0f ) },
+        { QVector3D(  unidad * 11 , -unidad * -1, distanciaSobreElPapel ), QVector2D( 0.0f, 1.0f ) },
+        { QVector3D( -unidad,  unidad * 8, distanciaSobreElPapel ), QVector2D( 1.0f, 0.0f ) },
+        { QVector3D(  unidad * 11 ,  unidad * 8, distanciaSobreElPapel ), QVector2D( 0.0f, 0.0f ) }
+    };
+
+    GLushort indices[] = { 0,  1,  2,  3,  3 };
+
+    // Transfer vertex data to VBO 0
+    arrayVideoBuf.bind();
+    arrayVideoBuf.allocate( vertices, 4 * sizeof( VertexData ) );
+
+    // Transfer index data to VBO 1
+    indexVideoBuf.bind();
+    indexVideoBuf.allocate( indices, 5 * sizeof( GLushort ) );
+
+
+
+}
+
+
+void GeometryEngine::initVideoTarjetaGeometry()
+{
+    GLfloat unidad = 1.0f;
+    GLfloat distanciaSobreElPapel = 0.01f;
+
+    VertexData vertices[] = {
+        // lateral derecho, abajo, z=0
+        { QVector3D( -unidad * 1.0, -unidad * 4, distanciaSobreElPapel ), QVector2D( 1.0f, 1.0f ) },
+        // lateral izquierdo, abajo, z=0
+        { QVector3D(  unidad * 3.2 , -unidad * 4, distanciaSobreElPapel ), QVector2D( 0.0f, 1.0f ) },
+
+        // lateral derecho, arriba, z=0
+        { QVector3D( -unidad * 1.0,  unidad * -1.0, distanciaSobreElPapel ), QVector2D( 1.0f, 0.0f ) },
+        // lateral izquierdo, arriba, z=0
+        { QVector3D(  unidad * 3.2 ,  unidad * -1.0, distanciaSobreElPapel ), QVector2D( 0.0f, 0.0f ) }
+    };
+
+    GLushort indices[] = { 0,  1,  2,  3,  3 };
+
+    // Transfer vertex data to VBO 0
+    arrayVideoTarjetaBuf.bind();
+    arrayVideoTarjetaBuf.allocate( vertices, 4 * sizeof( VertexData ) );
+
+    // Transfer index data to VBO 1
+    indexVideoTarjetaBuf.bind();
+    indexVideoTarjetaBuf.allocate( indices, 5 * sizeof( GLushort ) );
+
+
+
 }
 
 void GeometryEngine::initCubeGeometry()
@@ -234,17 +335,23 @@ void GeometryEngine::initCameraGeometry()
 
 void GeometryEngine::initSheetGeometry()
 {
-    GLfloat unidad = 0.35f;
+    GLfloat unidad = 1.0f;
 
     VertexData vertices[] = {
-        { QVector3D( unidad, -unidad, -0        ), QVector2D( 0.0f, 0.0f ) },  // v8
-        { QVector3D(-unidad, -unidad, -0        ), QVector2D( 1.0f, 0.0f ) },  // v9
-        { QVector3D( unidad,  unidad, -0        ), QVector2D( 0.0f, 1.0f ) },  // v10
-        { QVector3D(-unidad,  unidad, -0        ), QVector2D( 1.0f, 1.0f ) },  // v11
-        };
-    GLushort indices[] = {
-         0,  1,  2,  3,  3,
+        // Para la camera BackFace los puntos (x, y, z) corresponden a:
+
+        // lateral derecho, abajo, z=0
+        { QVector3D( -unidad * 1.2, -unidad * 1.2, 0 ), QVector2D( 1.0f, 1.0f ) },
+        // lateral izquierdo, abajo, z=0
+        { QVector3D(  unidad * 3.4 , -unidad * 1.2, 0 ), QVector2D( 0.0f, 1.0f ) },
+
+        // lateral derecho, arriba, z=0
+        { QVector3D( -unidad * 1.2,  unidad * 1.9, 0 ), QVector2D( 1.0f, 0.0f ) },
+        // lateral izquierdo, arriba, z=0
+        { QVector3D(  unidad * 3.4 ,  unidad * 1.9, 0 ), QVector2D( 0.0f, 0.0f ) }
     };
+
+    GLushort indices[] = { 0,  1,  2,  3,  3 };
 
     // Transfer vertex data to VBO 0
     arraySheetBuf.bind();
@@ -306,6 +413,55 @@ void GeometryEngine::drawHojaGeometry( QOpenGLShaderProgram *program )
 
 //    glDrawElements( GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0 );
     glDrawElements( GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_SHORT, 0 );
+
+}
+
+void GeometryEngine::drawVideoGeometry( QOpenGLShaderProgram *program )
+{
+    arrayVideoBuf.bind();
+    indexVideoBuf.bind();
+
+    quintptr offset = 0;
+
+    int vertexLocation = program->attributeLocation( "vertex" );
+
+    program->enableAttributeArray( vertexLocation );
+    program->setAttributeBuffer( vertexLocation, GL_FLOAT, offset, 3, sizeof( VertexData ) );
+
+    offset += sizeof( QVector3D );
+
+    int texcoordLocation = program->attributeLocation( "texCoord" );
+
+    program->enableAttributeArray( texcoordLocation );
+    program->setAttributeBuffer( texcoordLocation, GL_FLOAT, offset, 2, sizeof( VertexData ) );
+
+//    glDrawElements( GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0 );
+    glDrawElements( GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_SHORT, 0 );
+
+}
+
+void GeometryEngine::drawVideoTarjetaGeometry( QOpenGLShaderProgram *program )
+{
+    arrayVideoTarjetaBuf.bind();
+    indexVideoTarjetaBuf.bind();
+
+    quintptr offset = 0;
+
+    int vertexLocation = program->attributeLocation( "vertex" );
+
+    program->enableAttributeArray( vertexLocation );
+    program->setAttributeBuffer( vertexLocation, GL_FLOAT, offset, 3, sizeof( VertexData ) );
+
+    offset += sizeof( QVector3D );
+
+    int texcoordLocation = program->attributeLocation( "texCoord" );
+
+    program->enableAttributeArray( texcoordLocation );
+    program->setAttributeBuffer( texcoordLocation, GL_FLOAT, offset, 2, sizeof( VertexData ) );
+
+//    glDrawElements( GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0 );
+    glDrawElements( GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_SHORT, 0 );
+
 }
 
 void GeometryEngine::drawCameraGeometry( QOpenGLShaderProgram *program )

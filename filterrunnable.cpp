@@ -10,7 +10,7 @@
 
 #include "texturebuffer.h"
 
-#include "scene.h".h"
+#include "scene.h"
 
 
 FilterRunnable::FilterRunnable( VideoFilter * filter ) : m_filter(filter),
@@ -112,23 +112,25 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
         Mat mat( image.height(), image.width(), CV_8UC3, image.bits(), image.bytesPerLine() );
 
 //        flip( mat, mat, 0 );  // eje x
-//        flip( mat, mat, 1 );  // eje y
-//        flip( mat, mat, -1 );  // ambos
+        flip( mat, mat, 1 );  // eje y
+        flip( mat, mat, -1 );  // ambos
 
         cameraParameters->resize( mat.size() );
         markerDetector->detect( mat, detectedMarkers, *cameraParameters, 0.08f );
 
-//        flip( mat, mat, 0 );
+        flip( mat, mat, 0 );
 //        flip( mat, mat, 1 );
 //        flip( mat, mat, -1 );
+
+
+        Detector detector;
 
         if( detectedMarkers.size() > 0 )  {
 
             double projectionMatrix[16];
             cameraParameters->glGetProjectionMatrix( cv::Size2i( 640, 480 ),
                                                      cv::Size2i( 640, 480 ),
-                                                     projectionMatrix, 0.05, 10 );
-
+                                                     projectionMatrix, 0.05, 10 );            
 
             for( unsigned int i = 0; i < detectedMarkers.size(); i++ )  {
 
@@ -174,14 +176,23 @@ QVideoFrame FilterRunnable::run( QVideoFrame *input,
 
 //                projection.rotate(180, 0,0,1);
 
-                modelView.rotate(270, 0,0,1);
+                modelView.rotate( 270, 0, 0, 1 );
 
+                QPair< int, QMatrix4x4 > datosMarcador;
+                datosMarcador.first = detectedMarkers.at( i ).id;
+                datosMarcador.second = projection * modelView;
+                detector.append( datosMarcador );
+
+//                Scene::getInstancia()->getBackend()->setMatriz( projection * modelView );
 
 //                detectedMarkers.at( i ).draw( mat, Scalar( 255, 0, 255 ), 1 );
 
             }
         }
 
+        // Setea los datos de todos los marcadores detectados en este frame
+        // Si no se detectaron marcadores, entonces Detector tendra un size de cero
+        Scene::getInstancia()->getBackend()->setDetector( detector );
 
         input->unmap();
 

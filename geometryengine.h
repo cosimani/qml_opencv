@@ -71,10 +71,17 @@ public:
 
     void drawHojaGeometry(QOpenGLShaderProgram *program);
 
+    void drawVideoGeometry(QOpenGLShaderProgram *program);
+
+
+    void drawVideoTarjetaGeometry(QOpenGLShaderProgram *program);
 private:
     void initCubeGeometry();
     void initCameraGeometry();
     void initSheetGeometry();
+    void initHojaGeometry();
+    void initVideoGeometry();
+    void initVideoTarjetaGeometry();
 
     QOpenGLBuffer arrayCubeBuf;
     QOpenGLBuffer indexCubeBuf;
@@ -87,7 +94,14 @@ private:
 
     QOpenGLBuffer arraySheetBuf;
     QOpenGLBuffer indexSheetBuf;
-    void initHojaGeometry();
+
+    QOpenGLBuffer arrayVideoBuf;
+    QOpenGLBuffer indexVideoBuf;
+
+    QOpenGLBuffer arrayVideoTarjetaBuf;
+    QOpenGLBuffer indexVideoTarjetaBuf;
+
+
 
 };
 

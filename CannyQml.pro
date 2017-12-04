@@ -1,6 +1,8 @@
 QT += qml quick multimedia widgets quickwidgets opengl
 CONFIG += c++11
 
+TARGET = TARjetas
+
 TEMPLATE = app
 
 DEFINES += NO_DEBUG_ARUCO
@@ -22,7 +24,9 @@ SOURCES += main.cpp \
     backend.cpp \
     logorenderer.cpp \
     fboinsgrenderer.cpp \
-    geometryengine.cpp
+    geometryengine.cpp \
+    mp4runnable.cpp \
+    mp4filter.cpp
 
 RESOURCES += qml.qrc \
     files.qrc \
@@ -54,7 +58,9 @@ HEADERS += \
     backend.h \
     logorenderer.h \
     fboinsgrenderer.h \
-    geometryengine.h
+    geometryengine.h \
+    mp4filter.h \
+    mp4runnable.h
 
 ! contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Si no es para Android entonces para Desktop
 
@@ -131,6 +137,13 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Para Android
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
     ANDROID_EXTRA_LIBS = $$DIR_ANDROID_OPENCV/libs/armeabi-v7a/libopencv_java3.so
+
+    VIDEO_FILES.files = \
+        ../Videos/rentasonline.mp4
+
+    VIDEO_FILES.path = /assets/videos
+    INSTALLS += VIDEO_FILES
+
 }
 
 FORMS += \

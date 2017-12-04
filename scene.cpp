@@ -84,6 +84,41 @@ void Scene::setBackend(BackEnd *value)
     backend = value;
 }
 
+void Scene::pausarVideo()
+{
+    QQuickItem * itemRoot = ui->quickWidget->rootObject();
+
+//    qDebug() << "antes" << itemRoot->property( "reproduciendo" );
+
+    itemRoot->setProperty( "reproduciendo", false );
+
+//    qDebug() << "despues" << itemRoot->property( "reproduciendo" );
+
+
+//    qDebug() << itemRoot->childItems().at( 2 )->childItems();
+//    QQuickItem * rectangle = itemRoot->childItems().at( 0 );
+//    QQuickItem * mouseArea = itemRoot->childItems().at( 1 );
+//    QQuickItem * videoOutput = itemRoot->childItems().at( 2 );
+}
+
+void Scene::reanudarVideo()
+{
+    QQuickItem * itemRoot = ui->quickWidget->rootObject();
+
+//    qDebug() << "antes" << itemRoot->property( "reproduciendo" );
+
+    itemRoot->setProperty( "reproduciendo", true );
+
+//    qDebug() << "despues" << itemRoot->property( "reproduciendo" );
+
+
+//    qDebug() << itemRoot->childItems().at( 2 )->childItems();
+//    QQuickItem * rectangle = itemRoot->childItems().at( 0 );
+//    QQuickItem * mouseArea = itemRoot->childItems().at( 1 );
+//    QQuickItem * videoOutput = itemRoot->childItems().at( 2 );
+}
+
+
 void Scene::showEvent( QShowEvent * )
 {
     qDebug() << "showEvent";
@@ -109,7 +144,7 @@ void Scene::configurarWidget()
 
     qDebug() << "Dimensiones quickWidget" << ui->quickWidget->width() << ui->quickWidget->height();
 
-    QQmlEngine * engine = ui->quickWidget->rootContext()->engine();
+//    QQmlEngine * engine = ui->quickWidget->rootContext()->engine();
 
 //    QQuickItem * itemRoot = ui->quickWidget->rootObject();
 //    QQuickItem * rectangle = itemRoot->childItems().at( 0 );

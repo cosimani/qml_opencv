@@ -113,10 +113,15 @@ private:
     QVector< QOpenGLBuffer * > * vImageBuffer;
     QVector< QOpenGLTexture * > * vImageTexture;
 
+    QOpenGLBuffer * videoBuffer;
+    QOpenGLTexture * videoTexture;
+
     GeometryEngine *geometries;
     QQuaternion rotation;
 
     void loadTextures();
+
+    void loadVideo();
 
     int textureUniform1;
 

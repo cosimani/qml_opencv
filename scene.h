@@ -30,6 +30,8 @@ class Scene : public QWidget
     Q_OBJECT
 
 private:
+    Ui::Scene *ui;
+
     static Scene *instancia;
     explicit Scene( QWidget * parent = 0 );
 
@@ -41,15 +43,15 @@ public:
 
     void sendMatrix( QMatrix4x4 matrix );
 
-
     BackEnd * backend;
 
     BackEnd *getBackend() const;
     void setBackend(BackEnd *value);
 
-private:
-    Ui::Scene *ui;
+    void pausarVideo();
 
+    void reanudarVideo();
+private:
     void configurarWidget();
 
 protected:

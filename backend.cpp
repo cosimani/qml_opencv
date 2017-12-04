@@ -34,3 +34,29 @@ void BackEnd::setMatriz(const QMatrix4x4 &value)
 
     emit matrizChanged( m_matriz );
 }
+
+QImage BackEnd::getImage() const
+{
+    return m_image;
+}
+
+void BackEnd::setImage(const QImage &value)
+{
+    m_image = value;
+
+    emit imageChanged( m_image );
+}
+
+Detector BackEnd::getDetector() const
+{
+    return detector;
+}
+
+void BackEnd::setDetector(const Detector &value)
+{
+    detector = value;
+
+    emit detectorChanged( detector );
+}
+
+
