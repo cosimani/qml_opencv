@@ -3,6 +3,7 @@
 BackEnd::BackEnd(QObject *parent) :
     QObject(parent)
 {
+    
 }
 
 BackEnd::~BackEnd()
