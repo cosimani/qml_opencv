@@ -12,7 +12,6 @@
 
 #include "scene.h"
 
-
 FilterRunnable::FilterRunnable( VideoFilter * filter ) : m_filter(filter),
                                                          markerDetector( new aruco::MarkerDetector ),
                                                          cameraParameters( new aruco::CameraParameters )
@@ -49,19 +48,14 @@ FilterRunnable::FilterRunnable( VideoFilter * filter ) : m_filter(filter),
 
     cameraParameters->readFromXMLFile( CAMERA_PARAMETERS_FILE_LOCAL );
 
-
     if ( ! cameraParameters->isValid() )  {
         qDebug() << "Error con YML / No es valido. La App se cerrara";
     }
-
-
-
 }
 
 FilterRunnable::~FilterRunnable()
 {
     qDebug()<<"{destructor FilterRunnable}";
-
 }
 
 

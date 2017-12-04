@@ -10,15 +10,13 @@
 #include <scene.h>
 #include "fboinsgrenderer.h"
 
-//#include "backend.h"
-
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    qmlRegisterType< VideoFilter >( "com.camera.vayra", 1, 0, "VideoFilter" );
-    qmlRegisterType< Mp4Filter >( "com.mp4.vayra", 1, 0, "Mp4Filter" );
-    qmlRegisterType< FboInSGRenderer >( "SceneGraphRendering", 1, 0, "Renderer" );
+    qmlRegisterType< VideoFilter >( "com.vayra.camera", 1, 0, "VideoFilter" );
+    qmlRegisterType< Mp4Filter >( "com.vayra.mp4", 1, 0, "Mp4Filter" );
+    qmlRegisterType< FboInSGRenderer >( "com.vayra.rendering", 1, 0, "Renderer" );
 
     Scene::getInstancia()->show();
 

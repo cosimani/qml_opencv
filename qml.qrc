@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>CameraProcessing.qml</file>
+        <file>principal.qml</file>
     </qresource>
 </RCC>

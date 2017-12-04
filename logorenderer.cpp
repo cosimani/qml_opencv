@@ -172,6 +172,7 @@ void LogoRenderer::render()
 
         case 5:
         case 320:
+        case 256:
             qDebug() << "marcador" << detector.at( i ).first;
 
             matrix.setToIdentity();
