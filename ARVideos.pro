@@ -1,7 +1,7 @@
 QT += qml quick multimedia widgets quickwidgets opengl
 CONFIG += c++11
 
-TARGET = TARjetas
+TARGET = ARVideos
 
 TEMPLATE = app
 
@@ -139,7 +139,7 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a)  {  # Para Android
     ANDROID_EXTRA_LIBS = $$DIR_ANDROID_OPENCV/libs/armeabi-v7a/libopencv_java3.so
 
     VIDEO_FILES.files = \
-        ../Videos/rentasonline.mp4
+        ../videos/rentasonline.mp4
 
     VIDEO_FILES.path = /assets/videos
     INSTALLS += VIDEO_FILES
@@ -156,6 +156,13 @@ DISTFILES += \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.jar \
     android/gradlew \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew.bat \
+    android/AndroidManifest.xml \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradlew \
+    android/res/values/libs.xml \
+    android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew.bat
 

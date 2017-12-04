@@ -3,9 +3,9 @@ import QtMultimedia 5.8
 import QtQuick.Controls 2.0
 import QtWebView 1.0
 
-import com.camera.vayra 1.0
-import com.mp4.vayra 1.0
-import SceneGraphRendering 1.0
+import com.vayra.camera 1.0
+import com.vayra.mp4 1.0
+import com.vayra.rendering 1.0
 
 Item  {
     id: item
